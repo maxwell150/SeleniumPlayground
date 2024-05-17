@@ -7,16 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from data import username_orange, password_orange
 
 class OrangeHRM(unittest.TestCase):
-    def setUp(self) -> None:
+
+    def setUp(self):
         self.driver = webdriver.Chrome()
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 10)
         self.url = "https://opensource-demo.orangehrmlive.com/"
+        #open url
+        self.driver.get(self.url)
 
     def test_login(self):
-        driver = self.driver
-        #open url
-        driver.get(self.url)
+
         #get username field
         username = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@name='username']")))
         username.clear()
@@ -27,8 +28,9 @@ class OrangeHRM(unittest.TestCase):
         password.send_keys(password_orange)
         #get submit button
         button = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//button[@type='submit']"))).click()
-        print(f'TITLE:  {driver.title}')
-        time.sleep(10)
+        WebDriverWait(self.driver, 10).until(EC.title_is("OrangeHRM"))
+        print("✓ Test Passed")
+        
     def tearDown(self):
         try:
             self.driver.close()
